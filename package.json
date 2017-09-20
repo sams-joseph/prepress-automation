@@ -1,0 +1,21 @@
+{
+  "name": "jpegger",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "babel-node index.js --presets es2015,stage-2"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1"
+  },
+  "dependencies": {
+    "chokidar": "^1.7.0",
+    "imagemagick": "^0.1.3",
+    "winston": "^2.3.1"
+  }
+}
