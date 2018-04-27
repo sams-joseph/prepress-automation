@@ -8,10 +8,10 @@ import parser from 'xml2json';
 dotenv.config();
 
 const inputFolder = '/Volumes/G33STORE/_callas_server/_preflight/error';
-const processedFolder = '/Volumes/G33STORE/_callas_server/_preflight/processed';
+const successFolder = '/Volumes/G33STORE/_callas_server/_preflight/success';
 const logPath = '/Volumes/G33STORE/_Hotfolders/Logs';
 
-const from = '"Joseph Sams" <jsams@mmt.com>';
+const from = '"MMT Preflight" <no-reply@mmt.com>';
 
 const loggerError = new winston.Logger({
   level: 'verbose',
@@ -66,7 +66,20 @@ const sendPreflightEmail = (order, issues) => {
   logger.info(`${order} email has been sent`);
 };
 
-function parseReport(path, order) {
+const sendPreflightPassedEmail = (order) => {
+  const transport = setup();
+  const email = {
+    from,
+    to: 'jsams@mmt.com',
+    subject: `${order} - Passed Preflight`,
+    text: `No errors were found in this file.`,
+  };
+
+  transport.sendMail(email);
+  logger.info(`${order} email has been sent`);
+};
+
+function parseReport(path, order, cb) {
   fs.readFile(path, (err, data) => {
     if (err) loggerError.error(err);
     const json = parser.toJson(data);
@@ -80,8 +93,6 @@ function parseReport(path, order) {
     for (let i = 0; i < results.length; i++) {
       for (let x = 0; x < rules.length; x++) {
         if (results[i].rule_id === rules[x].id) {
-          message.push(results[i].severity);
-          message.push('\n');
           message.push(rules[x].display_name);
           message.push('\n');
           message.push(rules[x].display_comment);
@@ -92,12 +103,18 @@ function parseReport(path, order) {
     }
 
     const formattedMessage = message.join('');
-    console.log(formattedMessage);
-    // sendPreflightEmail(order, formattedMessage);
+    sendPreflightEmail(order, formattedMessage);
+    cb();
   });
 }
 
 const watcher = chokidar.watch(inputFolder, {
+  ignored: /(^|[\/\\])\../,
+  awaitWriteFinish: true,
+  persistent: true
+});
+
+const watchSuccess = chokidar.watch(successFolder, {
   ignored: /(^|[\/\\])\../,
   awaitWriteFinish: true,
   persistent: true
@@ -111,10 +128,32 @@ watcher
     const extension = filename.split('.')[1];
     const xmlReport = `${jobNumber}P${partNumber}_report.xml`
     if (filename === xmlReport) {
-      parseReport(`${inputFolder}/${xmlReport}`, `${jobNumber}P${partNumber}`);
+      parseReport(`${inputFolder}/${xmlReport}`, `${jobNumber}P${partNumber}`, () => {
+        fs.unlink(path, (err) => {
+          if (err) loggerError.error(err);
+          logger.info(`${path} has been deleted`);
+        });
+      });
+    } else {
+      fs.unlink(path, (err) => {
+        if (err) loggerError.error(err);
+        logger.info(`${path} has been deleted`);
+      });
     }
+  });
 
-    fs.rename(path, `${processedFolder}/${filename}`, error => {
-      if (error) loggerError.error(error);
+watchSuccess
+  .on('add', path => {
+    const filename = path.split('/').pop();
+    const jobNumber = filename.substring(0, 6);
+    const partNumber = filename.substring(7, 9);
+    const extension = filename.split('.')[1];
+
+    sendPreflightPassedEmail(`${jobNumber}P${partNumber}`);
+    logger.info(`${jobNumber}P${partNumber} has passed preflight`);
+
+    fs.unlink(path, (err) => {
+      if (err) loggerError.error(err);
+      logger.info(`${path} has been deleted`);
     });
   });
