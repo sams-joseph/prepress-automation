@@ -196,5 +196,107 @@
     "visibleWidth": 272,
     "bleedHeight": 124,
     "bleedWidth": 272
+  },
+  "6539": {
+    "visibleHeight": 42,
+    "visibleWidth": 26,
+    "bleedHeight": 46,
+    "bleedWidth": 30
+  },
+  "5026": {
+    "visibleHeight": 42,
+    "visibleWidth": 56,
+    "bleedHeight": 46,
+    "bleedWidth": 60
+  },
+  "5027": {
+    "visibleHeight": 42,
+    "visibleWidth": 56,
+    "bleedHeight": 46,
+    "bleedWidth": 60
+  },
+  "6265": {
+    "visibleHeight": 42,
+    "visibleWidth": 56,
+    "bleedHeight": 46,
+    "bleedWidth": 60
+  },
+  "6540": {
+    "visibleHeight": 80,
+    "visibleWidth": 38,
+    "bleedHeight": 84,
+    "bleedWidth": 42
+  },
+  "6438": {
+    "visibleHeight": 21.25,
+    "visibleWidth": 80.5,
+    "bleedHeight": 24,
+    "bleedWidth": 84
+  },
+  "5029": {
+    "visibleHeight": 21,
+    "visibleWidth": 20,
+    "bleedHeight": 22,
+    "bleedWidth": 21
+  },
+  "6606": {
+    "visibleHeight": 10.125,
+    "visibleWidth": 44.25,
+    "bleedHeight": 11,
+    "bleedWidth": 46
+  },
+  "5030": {
+    "visibleHeight": 31.5,
+    "visibleWidth": 19.5,
+    "bleedHeight": 33,
+    "bleedWidth": 21
+  },
+  "5032": {
+    "visibleHeight": 10,
+    "visibleWidth": 360,
+    "bleedHeight": 10,
+    "bleedWidth": 360
+  },
+  "5033": {
+    "visibleHeight": 30,
+    "visibleWidth": 144,
+    "bleedHeight": 30,
+    "bleedWidth": 144
+  },
+  "5036": {
+    "visibleHeight": 30,
+    "visibleWidth": 108,
+    "bleedHeight": 30,
+    "bleedWidth": 108
+  },
+  "5035": {
+    "visibleHeight": 30,
+    "visibleWidth": 88,
+    "bleedHeight": 30,
+    "bleedWidth": 88
+  },
+  "5038": {
+    "visibleHeight": 21,
+    "visibleWidth": 72,
+    "bleedHeight": 21,
+    "bleedWidth": 72
+  },
+  "6528": {
+    "visibleHeight": 27,
+    "visibleWidth": 237,
+    "bleedHeight": 30,
+    "bleedWidth": 240
+  },
+  "5071": {
+    "visibleHeight": 14,
+    "visibleWidth": 48,
+    "bleedHeight": 14,
+    "bleedWidth": 48
+  },
+  "6045": {
+    "visibleHeight": 65,
+    "visibleWidth": 44,
+    "bleedHeight": 69,
+    "bleedWidth": 48
   }
 }

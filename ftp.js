@@ -33,7 +33,7 @@ watcher
         if (err) throw err;
         console.log(`Uploaded Q${quoteNumber}P${partNumber}.${extension}`);
         fs.rename(path, `${processedFolder}/${quoteNumber}P${partNumber}.${extension}`, error => {
-          if (error) throw error;
+          if (error) console.log(error);
           console.log(`Moved Q${quoteNumber}P${partNumber}.${extension} to processed`);
         });
         c.end();

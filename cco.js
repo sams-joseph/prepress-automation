@@ -10,6 +10,11 @@ const keylineOutput = '/Volumes/G33STORE/_Hotfolders/Output/keyline';
 const epsonHotfolderPath = '/Volumes/G33STORE/_Hotfolders/Input/epson';
 const logPath = '/Volumes/G33STORE/_callas_server/BNS_STAGING/LOGS';
 const JSONPath = '/Volumes/G33STORE/_callas_server/BNS_STAGING/JSON_sidecar';
+const keylineErrorPath = '/Volumes/G33STORE/_callas_server/BNS_STAGING/_keyline/Error';
+const uploadPath = '/Volumes/G33STORE/_callas_server/BNS_STAGING/Success';
+const errorImage = './images/error_file.jpg';
+const errorPDF = './images/error_file.pdf';
+const processedErrorsPath = '/Volumes/G33STORE/_callas_server/BNS_STAGING/_processed_errors';
 const WIPPath = '/Volumes/G33STORE/WIP';
 
 const logger = new winston.Logger({
@@ -83,7 +88,11 @@ watcher
               "bleedHeight": quoteProduct.U_CustomHeight + 4,
               "bleedWidth": quoteProduct.U_CustomWidth + 4,
             }
-          } else if (quoteProduct.productItem === 5025) {
+          } else if (quoteProduct.productItem === 5025 ||
+            quoteProduct.productItem === 5039 ||
+            quoteProduct.productItem === 6307 ||
+            quoteProduct.productItem === 6269 ||
+            quoteProduct.productItem === 5075) {
             dims = {
               "visibleHeight": quoteProduct.U_CustomHeight,
               "visibleWidth": quoteProduct.U_CustomWidth,
@@ -121,6 +130,42 @@ watcher
         .catch(err => {
           loggerError.error(err);
         });
+    } catch (error) {
+      loggerError.error(err);
+    }
+  });
+
+const errorWatcher = chokidar.watch(keylineErrorPath, {
+  ignored: /(^|[\/\\])\../,
+  awaitWriteFinish: true,
+  persistent: true
+});
+
+errorWatcher
+  .on('add', path => {
+    try {
+      const filename = path.split('/').pop();
+      const extension = filename.split('.')[1];
+      const noExtension = filename.split('.')[0];
+      const quoteNumber = filename.substring(0, 5);
+      const partNumber = filename.substring(6, 8);
+
+      logger.info(`${quoteNumber}P${partNumber} has ecountered an error`);
+      fs.copyFile(errorImage, `${uploadPath}/${quoteNumber}P${partNumber}.jpg`, error => {
+        if (error) loggerError.error(error);
+
+        fs.copyFile(errorPDF, `${uploadPath}/${quoteNumber}P${partNumber}.pdf`, error => {
+          if (error) loggerError.error(error);
+
+          logger.info(`${quoteNumber}P${partNumber} error file has been copied to upload folder`);
+
+          fs.rename(path, `${processedErrorsPath}/${quoteNumber}P${partNumber}.${extension}`, error => {
+            if (error) loggerError.error(error);
+
+            logger.info(`${quoteNumber}P${partNumber} has been moved to error processed folder`);
+          });
+        });
+      });
     } catch (error) {
       loggerError.error(err);
     }

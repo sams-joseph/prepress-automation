@@ -18,8 +18,8 @@ const download = () => {
     processing = true;
 
     console.log('Successfully authenticated');
-    c.list((err, list) => {
-      if (err) throw err;
+    c.list('/clearchannel', (err, list) => {
+      if (err) console.log(err);
       list.forEach((element, index, array) => {
         if (element.type === 'd') {
           console.log(`Ignoring directory ${element.name}`);
@@ -43,11 +43,11 @@ const download = () => {
           path.extname(element.name) === '.gif' ||
           path.extname(element.name) === '.png') {
           console.log(`Downloading ${element.name}`);
-          c.get(element.name, (err, stream) => {
-            if (err) throw err;
+          c.get(`/clearchannel/${element.name}`, (err, stream) => {
+            if (err) console.log(err);
             stream.once('close', () => {
-              c.rename(element.name, `/downloaded/${element.name}`, (err) => {
-                if (err) throw err;
+              c.rename(`/clearchannel/${element.name}`, `/clearchannel/downloaded/${element.name}`, (err) => {
+                if (err) console.log(err);
               })
             });
             stream.pipe(fs.createWriteStream(`${inputFolder}/${element.name}`))
