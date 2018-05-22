@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "babel-node index.js --presets es2015,stage-2",
+    "start": "node index.js",
     "preflight": "babel-node preflight.js --presets es2015,stage-2",
     "keyline": "babel-node keyline.js --presets es2015,stage-2",
     "epson": "babel-node epson.js --presets es2015,stage-2",
@@ -12,7 +12,9 @@
     "ftp": "babel-node ftp.js --presets es2015,stage-2",
     "download": "babel-node download.js --presets es2015,stage-2",
     "production": "babel-node production.js --presets es2015,stage-2",
-    "cco": "babel-node cco.js --presets es2015,stage-2"
+    "cco": "babel-node cco.js --presets es2015,stage-2",
+    "ccostaging": "babel-node cco_staging.js --presets es2015,stage-2",
+    "ftpstaging": "babel-node ftp_staging.js --presets es2015,stage-2"
   },
   "author": "",
   "license": "ISC",
@@ -25,8 +27,10 @@
     "axios": "^0.18.0",
     "chokidar": "^1.7.0",
     "dotenv": "^5.0.1",
+    "form-data": "^2.3.2",
     "ftp": "^0.3.10",
     "nodemailer": "^4.6.4",
+    "pm2": "^2.10.3",
     "winston": "^2.3.1",
     "xml2json": "^0.11.2"
   }

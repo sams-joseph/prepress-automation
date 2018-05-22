@@ -1,0 +1,26 @@
+{
+  "apps": [
+    {
+      "script": "proofing/epson.js",
+      "watch": true,
+      "ignore_watch": [
+        ".git",
+        "node_modules"
+      ],
+      "group": "proofing",
+      "exec_mode": "cluster",
+      "instances": 1
+    },
+    {
+      "script": "proofing/keyline.js",
+      "watch": true,
+      "ignore_watch": [
+        ".git",
+        "node_modules"
+      ],
+      "group": "proofing",
+      "exec_mode": "cluster",
+      "instances": 1
+    }
+  ]
+}

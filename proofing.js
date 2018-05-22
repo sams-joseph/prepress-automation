@@ -1,5 +1,5 @@
 const pm2 = require('pm2');
-const { apps } = require('./manifest/manifest_cco.json');
+const { apps } = require('./manifest/manifest_proofing.json');
 
 pm2.connect(err => {
 	if (err) {

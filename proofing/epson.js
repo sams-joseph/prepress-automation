@@ -1,7 +1,7 @@
-import fs from 'fs';
-import chokidar from 'chokidar';
-import winston from 'winston';
-import axios from 'axios';
+const fs = require('fs');
+const chokidar = require('chokidar');
+const winston = require('winston');
+const axios = require('axios');
 
 const logPath = '/Volumes/G33STORE/_Hotfolders/Logs';
 const JSONPath = '/Volumes/G33STORE/_callas_server/_keyline/JSON_sidecar';

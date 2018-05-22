@@ -135,7 +135,7 @@
     "visibleHeight": 228,
     "visibleWidth": 576,
     "bleedHeight": 240,
-    "bleedWidth": 580
+    "bleedWidth": 588
   },
   "5986": {
     "visibleHeight": 228,
@@ -298,5 +298,29 @@
     "visibleWidth": 44,
     "bleedHeight": 69,
     "bleedWidth": 48
+  },
+  "6627": {
+    "visibleHeight": 72,
+    "visibleWidth": 144,
+    "bleedHeight": 84,
+    "bleedWidth": 156
+  },
+  "6893": {
+    "visibleHeight": 168,
+    "visibleWidth": 576,
+    "bleedHeight": 180,
+    "bleedWidth": 588
+  },
+  "6903": {
+    "visibleHeight": 144,
+    "visibleWidth": 288,
+    "bleedHeight": 156,
+    "bleedWidth": 300
+  },
+  "6905": {
+    "visibleHeight": 144,
+    "visibleWidth": 528,
+    "bleedHeight": 156,
+    "bleedWidth": 540
   }
 }

@@ -1,0 +1,26 @@
+{
+  "apps": [
+    {
+      "script": "cco/cco.js",
+      "watch": true,
+      "ignore_watch": [
+        ".git",
+        "node_modules"
+      ],
+      "group": "cco",
+      "exec_mode": "cluster",
+      "instances": 1
+    },
+    {
+      "script": "cco/upload.js",
+      "watch": true,
+      "ignore_watch": [
+        ".git",
+        "node_modules"
+      ],
+      "group": "cco",
+      "exec_mode": "cluster",
+      "instances": 1
+    }
+  ]
+}

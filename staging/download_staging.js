@@ -1,7 +1,7 @@
-import Client from 'ftp';
-import path from 'path';
-import fs from 'fs';
-import dotenv from 'dotenv';
+const Client = require('ftp');
+const path = require('path');
+const fs = require('fs');
+const dotenv = require('dotenv');
 dotenv.config();
 
 let processing = false;
@@ -11,28 +11,28 @@ const download = () => {
   const inputFolder = '/Volumes/G33STORE/_callas_server/BNS_STAGING/input';
 
   c.on('greeting', function () {
-    console.log('Connected to FTP server');
+    // console.log('Connected to FTP server');
   });
 
   c.on('ready', function () {
     processing = true;
 
-    console.log('Successfully authenticated');
+    // console.log('Successfully authenticated');
     c.list('/clearchannel', (err, list) => {
       if (err) console.log(err);
       list.forEach((element, index, array) => {
         if (element.type === 'd') {
-          console.log(`Ignoring directory ${element.name}`);
+          // console.log(`Ignoring directory ${element.name}`);
           return;
         }
 
         if (path.extname(element.name) === '.zip') {
-          console.log(`Ignoring file ${element.name}`);
+          // console.log(`Ignoring file ${element.name}`);
           return;
         }
 
         if (element.name.indexOf('anonymous') > -1) {
-          console.log(`Ignoring file ${element.name}`);
+          // console.log(`Ignoring file ${element.name}`);
           return;
         }
 
@@ -60,7 +60,7 @@ const download = () => {
   });
 
   c.on('close', function () {
-    console.log('Closed connection');
+    // console.log('Closed connection');
     processing = false;
   });
 
@@ -77,5 +77,3 @@ setInterval(() => {
     download();
   }
 }, 60000);
-
-export default download;

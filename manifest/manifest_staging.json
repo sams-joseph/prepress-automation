@@ -1,0 +1,37 @@
+{
+  "apps": [
+    {
+      "script": "staging/download_staging.js",
+      "watch": true,
+      "ignore_watch": [
+        ".git",
+        "node_modules"
+      ],
+      "group": "staging",
+      "exec_mode": "cluster",
+      "instances": 1
+    },
+    {
+      "script": "staging/cco_staging.js",
+      "watch": true,
+      "ignore_watch": [
+        ".git",
+        "node_modules"
+      ],
+      "group": "staging",
+      "exec_mode": "cluster",
+      "instances": 1
+    },
+    {
+      "script": "staging/upload_staging.js",
+      "watch": true,
+      "ignore_watch": [
+        ".git",
+        "node_modules"
+      ],
+      "group": "staging",
+      "exec_mode": "cluster",
+      "instances": 1
+    }
+  ]
+}
