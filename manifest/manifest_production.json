@@ -1,0 +1,15 @@
+{
+  "apps": [
+    {
+      "script": "production/production.js",
+      "watch": true,
+      "ignore_watch": [
+        ".git",
+        "node_modules"
+      ],
+      "group": "production",
+      "exec_mode": "cluster",
+      "instances": 1
+    }
+  ]
+}

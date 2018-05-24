@@ -72,60 +72,7 @@ watcher
             quoteProduct
           } = result.data;
 
-          let dims = {};
-
-          if (quoteProduct.productItem === 5886 || quoteProduct.productItem === 6299 || quoteProduct.productItem === 6000) {
-            dims = {
-              "visibleHeight": quoteProduct.U_CustomHeight,
-              "visibleWidth": quoteProduct.U_CustomWidth,
-              "bleedHeight": quoteProduct.U_CustomHeight + 12,
-              "bleedWidth": quoteProduct.U_CustomWidth + 12,
-            }
-          } else if (quoteProduct.productItem === 6420) {
-            dims = {
-              "visibleHeight": quoteProduct.U_CustomHeight,
-              "visibleWidth": quoteProduct.U_CustomWidth,
-              "bleedHeight": quoteProduct.U_CustomHeight + 4,
-              "bleedWidth": quoteProduct.U_CustomWidth + 4,
-            }
-          } else if (quoteProduct.productItem === 5025 ||
-            quoteProduct.productItem === 5039 ||
-            quoteProduct.productItem === 6307 ||
-            quoteProduct.productItem === 6269 ||
-            quoteProduct.productItem === 5075) {
-            dims = {
-              "visibleHeight": quoteProduct.U_CustomHeight,
-              "visibleWidth": quoteProduct.U_CustomWidth,
-              "bleedHeight": quoteProduct.U_CustomHeight,
-              "bleedWidth": quoteProduct.U_CustomWidth,
-            }
-          } else {
-            dims = {
-              ...productItems[quoteProduct.productItem]
-            };
-          }
-
-          const json = {
-            "visibleHeight": dims.visibleHeight,
-            "visibleWidth": dims.visibleWidth,
-            "bleedHeight": dims.bleedHeight,
-            "bleedWidth": dims.bleedWidth,
-            "description": quoteProduct.description,
-            "orderNumber": "Pending",
-            "partNumber": partNumber,
-          }
-
-          fs.writeFile(`${JSONPath}/${quoteNumber}P${partNumber}vis.json`, JSON.stringify(json), 'utf8', (err) => {
-            if (err) loggerError.error(error);
-
-            logger.info(`${quoteNumber}P${partNumber} sidecar JSON file has been created`);
-
-            fs.rename(path, `${processedPath}/${quoteNumber}P${partNumber}vis.${extension}`, error => {
-              if (error) loggerError.error(error);
-
-              logger.info(`${quoteNumber}P${partNumber} has been moved to keyline folder`);
-            });
-          });
+          generateSidecar(path, quote, quoteProduct, quoteNumber, partNumber, extension, noExtension);
         })
         .catch(err => {
           loggerError.error(err);
@@ -160,3 +107,68 @@ errorWatcher
       loggerError.error(err);
     }
   });
+
+
+
+const generateSidecar = (path, quote, quoteProduct, quoteNumber, partNumber, extension, noExtension) => {
+  const dims = setDims(quoteProduct);
+
+  const json = {
+    "visibleHeight": dims.visibleHeight,
+    "visibleWidth": dims.visibleWidth,
+    "bleedHeight": dims.bleedHeight,
+    "bleedWidth": dims.bleedWidth,
+    "description": quoteProduct.description,
+    "orderNumber": "Pending",
+    "partNumber": partNumber,
+  }
+
+  fs.writeFile(`${JSONPath}/${quoteNumber}P${partNumber}vis.json`, JSON.stringify(json), 'utf8', (err) => {
+    if (err) loggerError.error(error);
+
+    logger.info(`${quoteNumber}P${partNumber} sidecar JSON file has been created`);
+
+    fs.rename(path, `${processedPath}/${quoteNumber}P${partNumber}vis.${extension}`, error => {
+      if (error) loggerError.error(error);
+
+      logger.info(`${quoteNumber}P${partNumber} has been moved to keyline folder`);
+    });
+  });
+}
+
+const setDims = (quoteProduct) => {
+  let dims = {};
+
+  if (quoteProduct.productItem === 5886 || quoteProduct.productItem === 6299 || quoteProduct.productItem === 6000) {
+    dims = {
+      "visibleHeight": quoteProduct.U_CustomHeight,
+      "visibleWidth": quoteProduct.U_CustomWidth,
+      "bleedHeight": quoteProduct.U_CustomHeight + 12,
+      "bleedWidth": quoteProduct.U_CustomWidth + 12,
+    }
+  } else if (quoteProduct.productItem === 6420) {
+    dims = {
+      "visibleHeight": quoteProduct.U_CustomHeight,
+      "visibleWidth": quoteProduct.U_CustomWidth,
+      "bleedHeight": quoteProduct.U_CustomHeight + 4,
+      "bleedWidth": quoteProduct.U_CustomWidth + 4,
+    }
+  } else if (quoteProduct.productItem === 5025 ||
+    quoteProduct.productItem === 5039 ||
+    quoteProduct.productItem === 6307 ||
+    quoteProduct.productItem === 6269 ||
+    quoteProduct.productItem === 5075) {
+    dims = {
+      "visibleHeight": quoteProduct.U_CustomHeight,
+      "visibleWidth": quoteProduct.U_CustomWidth,
+      "bleedHeight": quoteProduct.U_CustomHeight,
+      "bleedWidth": quoteProduct.U_CustomWidth,
+    }
+  } else {
+    dims = {
+      ...productItems[quoteProduct.productItem]
+    };
+  }
+
+  return dims;
+}
