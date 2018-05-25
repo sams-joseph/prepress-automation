@@ -1,0 +1,15 @@
+{
+  "apps": [
+    {
+      "script": "renaming/rename_proofs.js",
+      "watch": true,
+      "ignore_watch": [
+        ".git",
+        "node_modules"
+      ],
+      "group": "renaming",
+      "exec_mode": "cluster",
+      "instances": 1
+    }
+  ]
+}

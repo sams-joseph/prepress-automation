@@ -5,7 +5,7 @@ const axios = require('axios');
 const productItems = require('../product-items.json');
 
 const hotfolderPath = '/Volumes/G33STORE/_callas_server/BNS_STAGING/input';
-const processedPath = '/Volumes/G33STORE/_callas_server/BNS_STAGING/_keyline/in_t';
+const processedPath = '/Volumes/G33STORE/_callas_server/BNS_STAGING/_keyline/In';
 const keylineOutput = '/Volumes/G33STORE/_Hotfolders/Output/keyline';
 const epsonHotfolderPath = '/Volumes/G33STORE/_Hotfolders/Input/epson';
 const logPath = '/Volumes/G33STORE/_callas_server/BNS_STAGING/LOGS';
