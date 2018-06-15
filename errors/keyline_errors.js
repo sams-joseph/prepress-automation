@@ -1,40 +1,13 @@
 const fs = require('fs');
+const path = require('path');
 const chokidar = require('chokidar');
-const nodemailer = require('nodemailer');
 const winston = require('winston');
 const axios = require('axios');
 const productItems = require('../product-items.json');
+const notifier = require('node-notifier');
 
 const keylineErrorPath = '/Volumes/G33STORE/_callas_server/_keyline/error';
 const logPath = '/Volumes/G33STORE/_Hotfolders/Logs';
-const from = '"MMT Preflight" <no-reply@mmt.com>';
-
-function setup() {
-	return nodemailer.createTransport({
-		host: process.env.MAILHOST,
-		port: process.env.MAILPORT,
-		auth: {
-			user: process.env.MAILUSER,
-			pass: process.env.MAILPASS
-		},
-		tls: {
-			rejectUnauthorized: false
-		}
-	});
-}
-
-const sendErrorEmail = (order, body) => {
-	const transport = setup();
-	const email = {
-		from,
-		to: 'jsams@mmt.com',
-		subject: `${order} - Error processing file`,
-		text: body,
-	};
-
-	transport.sendMail(email);
-	logger.info(`${order} email has been sent`);
-};
 
 const logger = new winston.Logger({
 	level: 'verbose',
@@ -69,13 +42,18 @@ const watcher = chokidar.watch(keylineErrorPath, {
 });
 
 watcher
-	.on('add', path => {
+	.on('add', orig => {
 		try {
-			const filename = path.split('/').pop();
-
-			logger.info(`${filename} has encountered an error`);
-			sendErrorEmail(`${filename}`, 'Error file has appeared in _keyline/error');
+			const filename = orig.split('/').pop();
+			logger.info(`${filename} has encountered an error during the keyline process`);
+			notifier.notify({
+				title: filename,
+				message: 'Error during the keyline process',
+				icon: path.join(__dirname, '/images/logo.png'),
+				contentImage: path.join(__dirname, '/images/icon.png'),
+				closeLabel: 'Close',
+			});
 		} catch (error) {
-			loggerError.error(err);
+			loggerError.error(error);
 		}
 	});

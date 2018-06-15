@@ -6,6 +6,7 @@ const axios = require('axios');
 const hotfolderPath = '/Volumes/G33STORE/_Hotfolders/Input/production';
 const ccoPePath = '/Volumes/G33STORE/_callas_server/_production/_cco_pe/In';
 const bulletinPath = '/Volumes/G33STORE/_callas_server/_production/_14x48/In';
+const bulletinOutPath = '/Volumes/G33STORE/_callas_server/_production/_14x48/Success';
 const standardPath = '/Volumes/G33STORE/_callas_server/_production/_standard/In';
 const logPath = '/Volumes/G33STORE/_Hotfolders/Logs';
 const JSONPath = '/Volumes/G33STORE/_callas_server/_keyline/JSON_sidecar';
@@ -146,4 +147,23 @@ watcher
       .catch(err => {
         loggerError.error(err);
       });
+  });
+
+
+const bulletinProductionSuccess = chokidar.watch(bulletinOutPath, {
+  ignored: /(^|[\/\\])\../,
+  awaitWriteFinish: true,
+  persistent: true
+});
+
+bulletinProductionSuccess
+  .on('add', path => {
+    const wip = '/Volumes/G33STORE/WIP';
+    const filename = path.split('/').pop();
+    const extension = filename.split('.')[1];
+    const jobNumber = filename.substring(0, 9);
+
+    fs.rename(path, `${wip}/${jobNumber}/paint_files/${jobNumber}xp10_mil.${extension}`, () => {
+      console.log(`${jobNumber} moved to WIP`);
+    })
   });

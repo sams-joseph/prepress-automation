@@ -1,13 +1,5 @@
-node proofing.js
+pm2 resurrect
 
-node staging.js
-
-pm2 stop download_staging upload_staging cco_staging
-
-node cco.js
-
-pm2 stop upload
-
-node production.js
+pm2 stop cco upload
 
 pm2 dash

@@ -48,10 +48,24 @@ const watcher = chokidar.watch(outputFolder, {
 watcher
   .on('add', path => {
     const c = new Client();
-    const filename = path.split('/').pop();
-    const extension = filename.split('.')[1];
-    const quoteNumber = filename.substring(0, 5);
-    const partNumber = filename.substring(6, 8);
+    let filename = path.split('/').pop();
+
+    if (filename[0] === 'Q') {
+      filename = filename.slice(1);
+    }
+
+    let extension = filename.split('.')[1];
+    let noExtension = filename.split('.')[0];
+    let quoteNumber = filename.substring(0, 5);
+    let partNumber = filename.substring(6, 8);
+
+    if (filename[0] === '5') {
+      quoteNumber = filename.substring(0, 6);
+      partNumber = filename.substring(7, 9);
+      extension = filename.split('.')[1];
+    }
+
+    const query = filename[0] === 'Q' || filename[0] === '1' ? 'quote' : 'job';
     const action = 'proofapproval';
     console.log('File added to upload directory');
 
@@ -65,7 +79,7 @@ watcher
         if (err) throw err;
         console.log(`Uploaded Q${quoteNumber}P${partNumber}.${extension}`);
         axios.get(
-          `http://buildnserv.com/pace/www/api?token=OsGHJd3Bxt&quote=${quoteNumber}&part=${partNumber}&action=${action}`
+          `http://buildnserv.com/pace/www/api?token=OsGHJd3Bxt&${query}=${quoteNumber}&part=${partNumber}&action=${action}`
         )
           .then(res => {
             if (res.data.status) {
@@ -75,12 +89,10 @@ watcher
                 console.log(`Moved Q${quoteNumber}P${partNumber}.${extension} to processed`);
               });
             } else {
-              sendPreflightEmail(`Q${quoteNumber}P${partNumber}`, `Failed to move the status of Q${quoteNumber}P${partNumber} to Proof Approval`);
             }
           })
           .catch(err => {
             console.log(err.error);
-            sendPreflightEmail(`Q${quoteNumber}P${partNumber}`, `Failed to move the status of Q${quoteNumber}P${partNumber} to Proof Approval`);
           });
 
         c.end();

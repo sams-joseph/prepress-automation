@@ -1,6 +1,7 @@
 {
   "apps": [
     {
+      "name": "cco",
       "script": "cco/cco.js",
       "watch": true,
       "ignore_watch": [
@@ -12,6 +13,7 @@
       "instances": 1
     },
     {
+      "name": "upload",
       "script": "cco/upload.js",
       "watch": true,
       "ignore_watch": [

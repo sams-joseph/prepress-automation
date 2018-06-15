@@ -59,7 +59,7 @@ watcher
 
 		parser.on('finish', function () {
 			output.forEach(rename => {
-				copyFiles(rename[0], rename[1], `${rename[0]}hr10.tif`, `${rename[1]}hr10.tif`)
+				copyFiles(rename[0], rename[1], `${rename[0]}.tif`, `${rename[1]}.tif`)
 			});
 		});
 
@@ -73,6 +73,7 @@ watcher
 
 
 function copyFiles(origOrder, newOrder, origFilename, newFilename) {
-	const wip = '/Volumes/G33STORE/WIP';
-	fs.copyFileSync(`${wip}/${origOrder}/paint_files/${origFilename}`, `${outputPathPaint}/${newFilename}`);
+	const input = '/Users/jsams/Desktop/rename/input';
+	const output = '/Users/jsams/Desktop/rename/output';
+	fs.copyFileSync(`${input}/${origFilename}`, `${output}/${newFilename}`);
 }

@@ -18,7 +18,7 @@ pm2.connect(err => {
 				pm2.disconnect();
 			}
 		);
-	})
+	});
 });
 
 setInterval(() => pm2.flush(), 86400 * 1000);

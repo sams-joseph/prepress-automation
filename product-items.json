@@ -328,5 +328,17 @@
     "visibleWidth": 294,
     "bleedHeight": 159,
     "bleedWidth": 306
+  },
+  "6902": {
+    "visibleHeight": 72,
+    "visibleWidth": 144,
+    "bleedHeight": 84,
+    "bleedWidth": 156
+  },
+  "6894": {
+    "visibleHeight": 126,
+    "visibleWidth": 432,
+    "bleedHeight": 138,
+    "bleedWidth": 444
   }
 }

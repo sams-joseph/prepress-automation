@@ -21,7 +21,7 @@ watcher
 		const filename = path.split('/').pop();
 		const jobNumber = filename.substring(0, 9);
 
-		fs.rename(path, `${wip}/${jobNumber}/paint_files/${jobNumber}hr10.tif`, () => {
+		fs.rename(path, `${wip}/${jobNumber}/paint_files/${filename}`, () => {
 			console.log(`${jobNumber} moved to WIP`);
 		})
 	});
