@@ -2,6 +2,7 @@ const Client = require('ftp');
 const path = require('path');
 const fs = require('fs');
 const dotenv = require('dotenv');
+const axios = require('axios');
 dotenv.config();
 
 let processing = false;
@@ -28,6 +29,33 @@ const download = () => {
 
         if (path.extname(element.name) === '.zip') {
           // console.log(`Ignoring file ${element.name}`);
+          const orderPart = path.basename(element.name, path.extname(element.name));
+          const part = orderPart.substring(orderPart.length - 2, orderPart.length);
+          let order = '';
+          if(orderPart[0] === '5') {
+            order = orderPart.substring(0, 6);
+          } else if(orderPart[0] === 'Q') {
+            order = orderPart.substring(1, 6);
+          } else {
+            order = orderPart.substring(0, 5);
+          }
+          const query = order[0] === 'Q' || order[0] === '1' ? 'quote' : 'job';
+
+          const action = 'proofapproval';
+          const message = encodeURIComponent('Manually reviewing file.');
+
+          c.rename(`/clearchannel/${element.name}`, `/clearchannel/downloaded/${element.name}`, (err) => {
+            if (err) console.log(err);
+            axios
+              .get(`http://buildnserv.com/pace/www/api?token=OsGHJd3Bxt&${query}=${order}&part=${part}&action=${action}&message=${message}&error=true`)
+              .then(result => {
+                console.log(result.data);
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          });
+
           return;
         }
 
