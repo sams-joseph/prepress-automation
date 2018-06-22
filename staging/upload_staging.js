@@ -31,7 +31,7 @@ const sendPreflightEmail = (order, body) => {
   const email = {
     from,
     to: 'jsams@mmt.com',
-    subject: `${order} - Error changing status`,
+    subject: `${order} - Ready for QC`,
     text: body,
   };
 
@@ -105,9 +105,9 @@ watcher
     });
 
     c.connect({
-      host: process.env.SPROOF_HOST,
-      user: process.env.SPROOF_USER,
-      password: process.env.SPROOF_PASS,
+      host: process.env.PROOF_HOST,
+      user: process.env.PROOF_USER,
+      password: process.env.PROOF_PASS,
     });
   });
 
