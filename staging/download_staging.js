@@ -47,7 +47,8 @@ const download = () => {
           c.rename(`/clearchannel/${element.name}`, `/clearchannel/downloaded/${element.name}`, (err) => {
             if (err) console.log(err);
             axios
-              .get(`http://buildnserv.com/pace/www/api?token=OsGHJd3Bxt&${query}=${order}&part=${part}&action=${action}&message=${message}&error=true`)
+              .get(`https://orders.mmt.com/api?token=OsGHJd3Bxt&${query}=${order}&part=${part}&action=${action}&message=${message}&error=true`)
+              // .get(`http://buildnserv.com/pace/www/api?token=OsGHJd3Bxt&${query}=${order}&part=${part}&action=${action}&message=${message}&error=true`)
               .then(result => {
                 console.log(result.data);
               })
@@ -94,9 +95,9 @@ const download = () => {
 
 
   c.connect({
-    host: process.env.UPLOAD_HOST,
-    user: process.env.UPLOAD_USER,
-    password: process.env.UPLOAD_PASS,
+    host: process.env.UPLOAD_LIVE_HOST,
+    user: process.env.UPLOAD_LIVE_USER,
+    password: process.env.UPLOAD_LIVE_PASS,
   });
 }
 
@@ -104,4 +105,4 @@ setInterval(() => {
   if (!processing) {
     download();
   }
-}, 60000);
+}, 300000);

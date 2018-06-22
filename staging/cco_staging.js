@@ -1,6 +1,5 @@
 const fs = require('fs');
 const chokidar = require('chokidar');
-const nodemailer = require('nodemailer');
 const winston = require('winston');
 const axios = require('axios');
 const productItems = require('../product-items.json');
@@ -18,33 +17,6 @@ const errorPDF = './images/error_file.pdf';
 const processedErrorsPath = '/Volumes/G33STORE/_callas_server/BNS_STAGING/_processed_errors';
 const WIPPath = '/Volumes/G33STORE/WIP';
 const from = '"MMT Preflight" <no-reply@mmt.com>';
-
-function setup() {
-  return nodemailer.createTransport({
-    host: process.env.MAILHOST,
-    port: process.env.MAILPORT,
-    auth: {
-      user: process.env.MAILUSER,
-      pass: process.env.MAILPASS
-    },
-    tls: {
-      rejectUnauthorized: false
-    }
-  });
-}
-
-const sendPreflightEmail = (order, body) => {
-  const transport = setup();
-  const email = {
-    from,
-    to: 'jsams@mmt.com',
-    subject: `${order} - Error processing file`,
-    text: body,
-  };
-
-  transport.sendMail(email);
-  console.log(`${order} email has been sent`);
-};
 
 const logger = new winston.Logger({
   level: 'verbose',
@@ -103,7 +75,7 @@ watcher
       logger.info(`${quoteNumber}P${partNumber} has been added to input queue`);
 
       axios
-        .get(`http://buildnserv.com/pace/www/api?token=OsGHJd3Bxt&${query}=${quoteNumber}&part=${partNumber}`)
+        .get(`https://orders.mmt.com/api?token=OsGHJd3Bxt&${query}=${quoteNumber}&part=${partNumber}`)
         .then(result => {
           if (query === 'quote') {
             createSidecarQuote(result, extension, noExtension, quoteNumber, partNumber, path);
@@ -119,54 +91,54 @@ watcher
     }
   });
 
-const errorWatcher = chokidar.watch(keylineErrorPath, {
-  ignored: /(^|[\/\\])\../,
-  awaitWriteFinish: true,
-  persistent: true
-});
+// const errorWatcher = chokidar.watch(keylineErrorPath, {
+//   ignored: /(^|[\/\\])\../,
+//   awaitWriteFinish: true,
+//   persistent: true
+// });
 
-errorWatcher
-  .on('add', path => {
-    try {
-      let filename = path.split('/').pop();
+// errorWatcher
+//   .on('add', path => {
+//     try {
+//       let filename = path.split('/').pop();
 
-      if (filename[0] === 'Q') {
-        filename = filename.slice(1);
-      }
+//       if (filename[0] === 'Q') {
+//         filename = filename.slice(1);
+//       }
 
-      let extension = filename.split('.')[1];
-      let noExtension = filename.split('.')[0];
-      let quoteNumber = filename.substring(0, 5);
-      let partNumber = filename.substring(6, 8);
+//       let extension = filename.split('.')[1];
+//       let noExtension = filename.split('.')[0];
+//       let quoteNumber = filename.substring(0, 5);
+//       let partNumber = filename.substring(6, 8);
 
-      if (filename[0] === '5') {
-        quoteNumber = filename.substring(0, 6);
-        partNumber = filename.substring(7, 9);
-        extension = filename.split('.')[1];
-      }
+//       if (filename[0] === '5') {
+//         quoteNumber = filename.substring(0, 6);
+//         partNumber = filename.substring(7, 9);
+//         extension = filename.split('.')[1];
+//       }
 
-      const query = filename[0] === 'Q' || filename[0] === '1' ? 'quote' : 'job';
-      const action = 'proofapproval';
-      const message = encodeURIComponent('We have encountered an error while processing your file.');
+//       const query = filename[0] === 'Q' || filename[0] === '1' ? 'quote' : 'job';
+//       const action = 'proofapproval';
+//       const message = encodeURIComponent('We have encountered an error while processing your file.');
 
-      logger.info(`${quoteNumber}P${partNumber} has ecountered an error`);
-      axios
-        .get(`http://buildnserv.com/pace/www/api?token=OsGHJd3Bxt&${query}=${quoteNumber}&part=${partNumber}&action=${action}&error=${message}`)
-        .then(result => {
-          logger.info(result.data.message);
-          fs.rename(path, `${processedErrorsPath}/${quoteNumber}P${partNumber}.${extension}`, error => {
-            if (error) loggerError.error(error);
+//       logger.info(`${quoteNumber}P${partNumber} has ecountered an error`);
+//       axios
+//         .get(`https://orders.mmt.com/api?token=OsGHJd3Bxt&${query}=${quoteNumber}&part=${partNumber}&action=${action}&message=${message}&error=true`)
+//         .then(result => {
+//           logger.info(result.data.message);
+//           fs.rename(path, `${processedErrorsPath}/${quoteNumber}P${partNumber}.${extension}`, error => {
+//             if (error) loggerError.error(error);
 
-            logger.info(`${quoteNumber}P${partNumber} has been moved to error processed folder`);
-          });
-        })
-        .catch(err => {
-          loggerError.error(err);
-        });
-    } catch (error) {
-      loggerError.error(err);
-    }
-  });
+//             logger.info(`${quoteNumber}P${partNumber} has been moved to error processed folder`);
+//           });
+//         })
+//         .catch(err => {
+//           loggerError.error(err);
+//         });
+//     } catch (error) {
+//       loggerError.error(err);
+//     }
+//   });
 
 
 function createSidecarQuote(result, extension, noExtension, quoteNumber, partNumber, path) {
@@ -242,8 +214,8 @@ function createSidecarJob(result, extension, jobNumber, partNumber, path) {
     jobPartItems,
   } = result.data;
 
-  let bleedWidth = jobPart.U_flatSizeWidth;
-  let bleedHeight = jobPart.U_flatSizeLength;
+  let bleedWidth = jobPart.U_flatSizeWidth ? jobPart.U_flatSizeWidth : 0;
+  let bleedHeight = jobPart.U_flatSizeLength ? jobPart.U_flatSizeLength : 0;
 
   for (let i = 0; i < jobPartItems.length; i++) {
     if (jobPartItems[i].name === "SSP Lind") {

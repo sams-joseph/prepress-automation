@@ -75,11 +75,12 @@ watcher
 
     c.on('ready', function () {
       console.log('Successfully authenticated');
-      c.put(path, `Q${quoteNumber}P${partNumber}.${extension}`, function (err) {
+      const order = quoteNumber[0] === '5' ? quoteNumber : `Q${quoteNumber}`;
+      c.put(path, `${order}P${partNumber}.${extension}`, function (err) {
         if (err) throw err;
-        console.log(`Uploaded Q${quoteNumber}P${partNumber}.${extension}`);
+        console.log(`Uploaded ${order}P${partNumber}.${extension}`);
         axios.get(
-          `http://buildnserv.com/pace/www/api?token=OsGHJd3Bxt&${query}=${quoteNumber}&part=${partNumber}&action=${action}`
+          `https://orders.mmt.com/api?token=OsGHJd3Bxt&${query}=${quoteNumber}&part=${partNumber}&action=${action}`
         )
           .then(res => {
             if (res.data.status) {
@@ -120,10 +121,24 @@ const imageWatcher = chokidar.watch(imageFolder, {
 imageWatcher
   .on('add', path => {
     const c = new Client();
-    const filename = path.split('/').pop();
-    const extension = filename.split('.')[1];
-    const quoteNumber = filename.substring(0, 5);
-    const partNumber = filename.substring(6, 8);
+
+    let filename = path.split('/').pop();
+
+    if (filename[0] === 'Q') {
+      filename = filename.slice(1);
+    }
+
+    let extension = filename.split('.')[1];
+    let noExtension = filename.split('.')[0];
+    let quoteNumber = filename.substring(0, 5);
+    let partNumber = filename.substring(6, 8);
+
+    if (filename[0] === '5') {
+      quoteNumber = filename.substring(0, 6);
+      partNumber = filename.substring(7, 9);
+      extension = filename.split('.')[1];
+    }
+
     console.log('File added to upload directory');
 
     c.on('greeting', function () {
@@ -131,10 +146,11 @@ imageWatcher
     });
 
     c.on('ready', function () {
+      const order = quoteNumber[0] === '5' ? quoteNumber : `Q${quoteNumber}`;
       console.log('Successfully authenticated');
-      c.put(path, `Q${quoteNumber}P${partNumber}.${extension}`, function (err) {
+      c.put(path, `${order}P${partNumber}.${extension}`, function (err) {
         if (err) throw err;
-        console.log(`Uploaded Q${quoteNumber}P${partNumber}.${extension}`);
+        console.log(`Uploaded ${order}P${partNumber}.${extension}`);
         fs.rename(path, `${processedFolder}/${quoteNumber}P${partNumber}.${extension}`, error => {
           if (error) throw error;
           console.log(`Moved Q${quoteNumber}P${partNumber}.${extension} to processed`);
@@ -148,8 +164,8 @@ imageWatcher
     });
 
     c.connect({
-      host: process.env.SPROOF_HOST,
-      user: process.env.SPROOF_USER,
-      password: process.env.SPROOF_PASS,
+      host: process.env.PROOF_HOST,
+      user: process.env.PROOF_USER,
+      password: process.env.PROOF_PASS,
     });
   });
