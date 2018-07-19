@@ -4,6 +4,7 @@ const winston = require('winston');
 const axios = require('axios');
 const productItems = require('../product-items.json');
 
+const clientFiles = '/Volumes/ClientUploads/tFlow/BuildNServ';
 const hotfolderPath = '/Volumes/G33STORE/_callas_server/BNS_STAGING/input';
 const processedPath = '/Volumes/G33STORE/_callas_server/BNS_STAGING/_keyline/In';
 const keylineOutput = '/Volumes/G33STORE/_Hotfolders/Output/keyline';
@@ -52,6 +53,7 @@ const watcher = chokidar.watch(hotfolderPath, {
 
 watcher
   .on('add', path => {
+    const originalName = path.split('/').pop();
     try {
       let filename = path.split('/').pop();
 
@@ -74,18 +76,22 @@ watcher
 
       logger.info(`${quoteNumber}P${partNumber} has been added to input queue`);
 
-      axios
-        .get(`https://orders.mmt.com/api?token=OsGHJd3Bxt&${query}=${quoteNumber}&part=${partNumber}`)
-        .then(result => {
-          if (query === 'quote') {
-            createSidecarQuote(result, extension, noExtension, quoteNumber, partNumber, path);
-          } else if (query === 'job') {
-            createSidecarJob(result, extension, quoteNumber, partNumber, path);
-          }
-        })
-        .catch(err => {
-          loggerError.error(err);
-        });
+      fs.copyFile(path, `${clientFiles}/${originalName}`, err => {
+
+        axios
+          .get(`https://orders.mmt.com/api?token=OsGHJd3Bxt&${query}=${quoteNumber}&part=${partNumber}`)
+          .then(result => {
+            if (query === 'quote') {
+              createSidecarQuote(result, extension, noExtension, quoteNumber, partNumber, path);
+            } else if (query === 'job') {
+              createSidecarJob(result, extension, quoteNumber, partNumber, path);
+            }
+          })
+          .catch(err => {
+            loggerError.error(err);
+          });
+
+      });
     } catch (error) {
       loggerError.error(err);
     }

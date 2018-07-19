@@ -346,5 +346,11 @@
     "visibleWidth": 360,
     "bleedHeight": 132,
     "bleedWidth": 372
+  },
+  "6898": {
+    "visibleHeight": 144,
+    "visibleWidth": 480,
+    "bleedHeight": 156,
+    "bleedWidth": 492
   }
 }

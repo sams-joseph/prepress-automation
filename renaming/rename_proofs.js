@@ -5,7 +5,7 @@ const axios = require('axios');
 const sanitize = require('sanitize-filename');
 
 const inputPath = '/Volumes/G33STORE/_tFlow_Hotfolders/csr_repository/rapport_crazy_proof_input';
-const outputPath = '/Volumes/G33STORE/_tFlow_Hotfolders/csr_repository/rapport_crazy_proof_output';
+const outputPath = '/Volumes/G33STORE/_tFlow_Hotfolders/csr_repository/rapport_output_because_of_jenna';
 const logPath = '/Volumes/G33STORE/_Hotfolders/Logs';
 
 const logger = new winston.Logger({
