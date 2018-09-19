@@ -72,7 +72,7 @@ watcher
         extension = filename.split('.')[1];
       }
 
-      const query = filename[0] === 'Q' || filename[0] === '1' ? 'quote' : 'job';
+      const query = filename[0] === 'Q' || filename[0] === '1' || filename[0] === '2' ? 'quote' : 'job';
 
       logger.info(`${quoteNumber}P${partNumber} has been added to input queue`);
 
