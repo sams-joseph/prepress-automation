@@ -4,7 +4,7 @@ const winston = require('winston');
 const axios = require('axios');
 
 const hotfolderPath = '/Volumes/G33STORE/_Hotfolders/Input/keyline';
-const processedPath = '/Volumes/G33STORE/_callas_server/_keyline/in_folder';
+const processedPath = '/Volumes/G33STORE/_callas_server/_keyline/input_3';
 const keylineOutput = '/Volumes/G33STORE/_Hotfolders/Output/keyline';
 const epsonHotfolderPath = '/Volumes/G33STORE/_Hotfolders/Input/epson';
 const logPath = '/Volumes/G33STORE/_Hotfolders/Logs';

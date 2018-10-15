@@ -66,11 +66,17 @@ const download = () => {
         }
 
         if (path.extname(element.name) === '.jpg' ||
+          path.extname(element.name) === '.JPG' ||
           path.extname(element.name) === '.jpeg' ||
+          path.extname(element.name) === '.JPEG' ||
           path.extname(element.name) === '.pdf' ||
+          path.extname(element.name) === '.PDF' ||
           path.extname(element.name) === '.tif' ||
+          path.extname(element.name) === '.TIF' ||
           path.extname(element.name) === '.gif' ||
-          path.extname(element.name) === '.png') {
+          path.extname(element.name) === '.GIF' ||
+          path.extname(element.name) === '.png' ||
+          path.extname(element.name) === '.PNG') {
           console.log(`Downloading ${element.name}`);
           c.get(`/clearchannel/${element.name}`, (err, stream) => {
             if (err) console.log(err);
