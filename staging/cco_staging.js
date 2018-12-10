@@ -83,7 +83,7 @@ watcher
       fs.copyFile(path, `${clientFiles}/${originalName}`, err => {
 
         axios
-          .get(`https://orders.mmt.com/api?${TOKEN}=OsGHJd3Bxt&${query}=${quoteNumber}&part=${partNumber}`)
+          .get(`https://orders.mmt.com/api?token=${TOKEN}&${query}=${quoteNumber}&part=${partNumber}`)
           .then(result => {
             if (query === 'quote') {
               createSidecarQuote(result, extension, noExtension, quoteNumber, partNumber, path);
