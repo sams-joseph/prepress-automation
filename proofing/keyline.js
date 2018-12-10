@@ -2,9 +2,13 @@ const fs = require('fs');
 const chokidar = require('chokidar');
 const winston = require('winston');
 const axios = require('axios');
+const dotenv = require('dotenv');
+dotenv.config();
+
+const TOKEN = process.env.TOKEN;
 
 const hotfolderPath = '/Volumes/G33STORE/_Hotfolders/Input/keyline';
-const processedPath = '/Volumes/G33STORE/_callas_server/_keyline/input_3';
+const processedPath = '/Volumes/G33STORE/_callas_server/_keyline/input_6';
 const keylineOutput = '/Volumes/G33STORE/_Hotfolders/Output/keyline';
 const epsonHotfolderPath = '/Volumes/G33STORE/_Hotfolders/Input/epson';
 const logPath = '/Volumes/G33STORE/_Hotfolders/Logs';
@@ -53,7 +57,7 @@ watcher
     logger.info(`${jobNumber}P${partNumber} has been added to input queue`);
 
     axios
-      .get(`https://orders.mmt.com/api/?job=${jobNumber}&part=${partNumber}&token=OsGHJd3Bxt`)
+      .get(`https://orders.mmt.com/api/?job=${jobNumber}&part=${partNumber}&token=${TOKEN}`)
       .then(result => {
         const {
           job,

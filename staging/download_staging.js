@@ -5,6 +5,8 @@ const dotenv = require('dotenv');
 const axios = require('axios');
 dotenv.config();
 
+const TOKEN = process.env.TOKEN;
+
 let processing = false;
 
 const download = () => {
@@ -32,9 +34,9 @@ const download = () => {
           const orderPart = path.basename(element.name, path.extname(element.name));
           const part = orderPart.substring(orderPart.length - 2, orderPart.length);
           let order = '';
-          if(orderPart[0] === '5') {
+          if (orderPart[0] === '5') {
             order = orderPart.substring(0, 6);
-          } else if(orderPart[0] === 'Q') {
+          } else if (orderPart[0] === 'Q') {
             order = orderPart.substring(1, 6);
           } else {
             order = orderPart.substring(0, 5);
@@ -47,8 +49,8 @@ const download = () => {
           c.rename(`/clearchannel/${element.name}`, `/clearchannel/downloaded/${element.name}`, (err) => {
             if (err) console.log(err);
             axios
-              .get(`https://orders.mmt.com/api?token=OsGHJd3Bxt&${query}=${order}&part=${part}&action=${action}&message=${message}&error=true`)
-              // .get(`http://buildnserv.com/pace/www/api?token=OsGHJd3Bxt&${query}=${order}&part=${part}&action=${action}&message=${message}&error=true`)
+              .get(`https://orders.mmt.com/api?token=${TOKEN}&${query}=${order}&part=${part}&action=${action}&message=${message}&error=true`)
+              // .get(`http://buildnserv.com/pace/www/api?token=${TOKEN}&${query}=${order}&part=${part}&action=${action}&message=${message}&error=true`)
               .then(result => {
                 console.log(result.data);
               })

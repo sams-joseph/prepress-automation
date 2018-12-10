@@ -3,10 +3,14 @@ const chokidar = require('chokidar');
 const winston = require('winston');
 const axios = require('axios');
 const productItems = require('../product-items.json');
+const dotenv = require('dotenv');
+dotenv.config();
+
+const TOKEN = process.env.TOKEN;
 
 const clientFiles = '/Volumes/ClientUploads/tFlow/BuildNServ';
 const hotfolderPath = '/Volumes/G33STORE/_callas_server/BNS_STAGING/input';
-const processedPath = '/Volumes/G33STORE/_callas_server/BNS_STAGING/_keyline/In';
+const processedPath = '/Volumes/G33STORE/_callas_server/BNS_STAGING/_keyline/In_2';
 const keylineOutput = '/Volumes/G33STORE/_Hotfolders/Output/keyline';
 const epsonHotfolderPath = '/Volumes/G33STORE/_Hotfolders/Input/epson';
 const logPath = '/Volumes/G33STORE/_callas_server/BNS_STAGING/LOGS';
@@ -79,7 +83,7 @@ watcher
       fs.copyFile(path, `${clientFiles}/${originalName}`, err => {
 
         axios
-          .get(`https://orders.mmt.com/api?token=OsGHJd3Bxt&${query}=${quoteNumber}&part=${partNumber}`)
+          .get(`https://orders.mmt.com/api?${TOKEN}=OsGHJd3Bxt&${query}=${quoteNumber}&part=${partNumber}`)
           .then(result => {
             if (query === 'quote') {
               createSidecarQuote(result, extension, noExtension, quoteNumber, partNumber, path);
@@ -129,7 +133,7 @@ watcher
 
 //       logger.info(`${quoteNumber}P${partNumber} has ecountered an error`);
 //       axios
-//         .get(`https://orders.mmt.com/api?token=OsGHJd3Bxt&${query}=${quoteNumber}&part=${partNumber}&action=${action}&message=${message}&error=true`)
+//         .get(`https://orders.mmt.com/api?token=${TOKEN}&${query}=${quoteNumber}&part=${partNumber}&action=${action}&message=${message}&error=true`)
 //         .then(result => {
 //           logger.info(result.data.message);
 //           fs.rename(path, `${processedErrorsPath}/${quoteNumber}P${partNumber}.${extension}`, error => {

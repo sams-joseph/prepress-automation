@@ -3,6 +3,10 @@ const chokidar = require('chokidar');
 const winston = require('winston');
 const axios = require('axios');
 const productItems = require('../product-items.json');
+const dotenv = require('dotenv');
+dotenv.config();
+
+const TOKEN = process.env.TOKEN;
 
 const hotfolderPath = '/Volumes/G33STORE/_callas_server/BNS_STAGING/input';
 const processedPath = '/Volumes/G33STORE/_callas_server/BNS_STAGING/_keyline/In';
@@ -65,7 +69,7 @@ watcher
 
       logger.info(`${quoteNumber}P${partNumber} has been added to input queue`);
       axios
-        .get(`https://orders.mmt.com/api?token=OsGHJd3Bxt&quote=${quoteNumber}&part=${partNumber}`)
+        .get(`https://orders.mmt.com/api?token=${TOKEN}&quote=${quoteNumber}&part=${partNumber}`)
         .then(result => {
           const {
             quote,

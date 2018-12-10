@@ -6,6 +6,8 @@ const dotenv = require('dotenv');
 const nodemailer = require('nodemailer');
 dotenv.config();
 
+const TOKEN = process.env.TOKEN;
+
 const inputFolder = '/Volumes/G33STORE/_callas_server/BNS_STAGING/input';
 const outputFolder = '/Volumes/G33STORE/_callas_server/BNS_STAGING/Success';
 const imageFolder = '/Volumes/G33STORE/_callas_server/BNS_STAGING/_image_export/Success';
@@ -80,7 +82,7 @@ watcher
         if (err) throw err;
         console.log(`Uploaded ${order}P${partNumber}.${extension}`);
         axios.get(
-          `https://orders.mmt.com/api?token=OsGHJd3Bxt&${query}=${quoteNumber}&part=${partNumber}&action=${action}`
+          `https://orders.mmt.com/api?token=${TOKEN}&${query}=${quoteNumber}&part=${partNumber}&action=${action}`
         )
           .then(res => {
             if (res.data.status) {

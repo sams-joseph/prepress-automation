@@ -3,6 +3,10 @@ const chokidar = require('chokidar');
 const winston = require('winston');
 const axios = require('axios');
 const sanitize = require('sanitize-filename');
+const dotenv = require('dotenv');
+dotenv.config();
+
+const TOKEN = process.env.TOKEN;
 
 const inputPath = '/Volumes/G33STORE/_tFlow_Hotfolders/csr_repository/rapport_crazy_proof_input';
 const outputPath = '/Volumes/G33STORE/_tFlow_Hotfolders/csr_repository/rapport_output_because_of_jenna';
@@ -50,7 +54,7 @@ watcher
 		logger.info(`${jobNumber}P${partNumber} has been added to input queue`);
 
 		axios
-			.get(`https://orders.mmt.com/api/?job=${jobNumber}&part=${partNumber}&token=OsGHJd3Bxt`)
+			.get(`https://orders.mmt.com/api/?job=${jobNumber}&part=${partNumber}&token=${TOKEN}`)
 			.then(result => {
 				const {
 					jobPart,
