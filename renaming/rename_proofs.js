@@ -8,8 +8,8 @@ dotenv.config();
 
 const TOKEN = process.env.TOKEN;
 
-const inputPath = '/Volumes/G33STORE/_tFlow_Hotfolders/csr_repository/rapport_crazy_proof_input';
-const outputPath = '/Volumes/G33STORE/_tFlow_Hotfolders/csr_repository/rapport_output_because_of_jenna';
+const inputPath = '/Volumes/G33STORE/_tFlow_Hotfolders/csr_repository/_rapport_input';
+const outputPath = '/Volumes/G33STORE/_tFlow_Hotfolders/csr_repository/_rapport_output';
 const logPath = '/Volumes/G33STORE/_Hotfolders/Logs';
 
 const logger = new winston.Logger({

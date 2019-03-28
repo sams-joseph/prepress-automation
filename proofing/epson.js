@@ -16,7 +16,7 @@ const epsonPDFPath = '/Volumes/G33STORE/_callas_server/_epson/_epson_export tiff
 const epsonTIFFPath = '/Volumes/G33STORE/_callas_server/_epson/_epson_export tiff/success';
 const csrRepositoryPath = '/Volumes/G33STORE/_Hotfolders/Input/csr_repository';
 const approvalStaging = '/Volumes/G33STORE/_callas_server/_staging/approval_sheet';
-const approvalSheetPath = '/Volumes/G33STORE/_callas_server/_approval_sheet/Input_3';
+const approvalSheetPath = '/Volumes/G33STORE/_callas_server/_approval_sheet/Input_10';
 const primaryPdfInPath = '/Volumes/G33STORE/_callas_server/_primary/_primary_pre-scale_pdf_for_image/In';
 const primaryStaging = '/Volumes/G33STORE/_callas_server/_staging/primary_pdf';
 
