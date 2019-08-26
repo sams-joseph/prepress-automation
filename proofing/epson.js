@@ -98,12 +98,20 @@ epsonWatcher
           }
         }
 
+        let materials = [];
+        for (let i = 0; i < jobMaterials.length; i += 1) {
+          materials.push(jobMaterials[i].description);
+        }
+
+        materials = materials.join();
+
         const json = {
           "visibleHeight": jobPart.finalSizeH,
           "visibleWidth": jobPart.finalSizeW,
           "bleedHeight": bleedHeight,
           "bleedWidth": bleedWidth,
           "description": jobPart.description,
+          "substrate": materials,
           "orderNumber": job.job,
           "partNumber": jobPart.jobPart,
         }

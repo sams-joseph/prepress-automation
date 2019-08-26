@@ -8,7 +8,7 @@ dotenv.config();
 const TOKEN = process.env.TOKEN;
 
 const hotfolderPath = '/Volumes/G33STORE/_Hotfolders/Input/keyline';
-const processedPath = '/Volumes/G33STORE/_callas_server/_keyline/input_6';
+const processedPath = '/Volumes/G33STORE/_callas_server/_keyline/input_22';
 const keylineOutput = '/Volumes/G33STORE/_Hotfolders/Output/keyline';
 const epsonHotfolderPath = '/Volumes/G33STORE/_Hotfolders/Input/epson';
 const logPath = '/Volumes/G33STORE/_Hotfolders/Logs';
@@ -93,12 +93,20 @@ watcher
           }
         }
 
+        let materials = [];
+        for (let i = 0; i < jobMaterials.length; i += 1) {
+          materials.push(jobMaterials[i].description);
+        }
+
+        materials = materials.join();
+
         const json = {
           "visibleHeight": jobPart.finalSizeH,
           "visibleWidth": jobPart.finalSizeW,
           "bleedHeight": bleedHeight,
           "bleedWidth": bleedWidth,
           "description": jobPart.description,
+          "substrate": materials,
           "orderNumber": job.job,
           "partNumber": jobPart.jobPart,
         }
