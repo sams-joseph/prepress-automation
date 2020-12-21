@@ -22,7 +22,7 @@
     "dotenv": "^5.0.1",
     "form-data": "^2.3.2",
     "ftp": "^0.3.10",
-    "node-notifier": "^5.2.1",
+    "node-notifier": "^8.0.1",
     "nodemailer": "^4.6.4",
     "pm2": "^2.10.3",
     "sanitize-filename": "^1.6.1",
